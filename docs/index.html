@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bot Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="shared/style.css?v=1" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="topbar__logo-emoji" aria-hidden="true">🤖</span>
+    <div>
+      <span class="topbar__eyebrow">Pick a server to configure</span>
+      <h1 class="topbar__title">Bot Dashboard</h1>
+    </div>
+  </div>
+  <div class="topbar__controls">
+    <div id="authArea" class="auth"></div>
+  </div>
+</header>
+
+<main id="view" class="view view--narrow">
+
+  <!-- Logged out -->
+  <section id="gate" class="panel gate">
+    <span class="gate__mascot-emoji" aria-hidden="true">🤖</span>
+    <p class="gate__eyebrow">Let's get in</p>
+    <h2>Sign in to manage your servers</h2>
+    <p class="gate__body">Sign in with Discord to configure the bot for any server where you have Manage Server permission.</p>
+    <button id="loginBtn" class="btn btn--discord">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.3 4.9A17.6 17.6 0 0 0 15.9 3.4a.1.1 0 0 0-.1.05c-.2.35-.4.8-.55 1.15a16.3 16.3 0 0 0-4.9 0c-.15-.36-.36-.8-.56-1.15a.1.1 0 0 0-.1-.05 17.5 17.5 0 0 0-4.4 1.5.1.1 0 0 0-.05.04C2.9 8.3 2.3 11.6 2.6 14.9a.1.1 0 0 0 .04.08 17.6 17.6 0 0 0 5.3 2.5.1.1 0 0 0 .11-.04c.4-.56.77-1.15 1.1-1.77a.1.1 0 0 0-.05-.14 11.6 11.6 0 0 1-1.66-.8.1.1 0 0 1 0-.17c.1-.09.23-.18.34-.27a.1.1 0 0 1 .1 0c3.5 1.6 7.3 1.6 10.75 0a.1.1 0 0 1 .1 0c.11.1.23.18.34.27a.1.1 0 0 1 0 .17c-.53.31-1.08.58-1.66.8a.1.1 0 0 0-.05.14c.34.62.72 1.2 1.1 1.77a.1.1 0 0 0 .11.04 17.5 17.5 0 0 0 5.31-2.5.1.1 0 0 0 .04-.08c.36-3.9-.6-7.15-2.5-10a.1.1 0 0 0-.04-.05ZM9.7 12.9c-.94 0-1.72-.87-1.72-1.94 0-1.07.76-1.94 1.72-1.94.96 0 1.74.88 1.72 1.94 0 1.07-.76 1.94-1.72 1.94Zm6.6 0c-.94 0-1.71-.87-1.71-1.94 0-1.07.76-1.94 1.71-1.94.97 0 1.74.88 1.72 1.94 0 1.07-.75 1.94-1.72 1.94Z"/></svg>
+      Continue with Discord
+    </button>
+  </section>
+
+  <!-- Loading -->
+  <section id="loading" class="panel gate" hidden>
+    <p class="gate__eyebrow">Just a sec…</p>
+    <h2>Fetching your servers…</h2>
+  </section>
+
+  <!-- No manageable servers found -->
+  <section id="noGuilds" class="panel gate" hidden>
+    <span class="gate__mascot-emoji" aria-hidden="true">🔍</span>
+    <p class="gate__eyebrow">Nothing here yet</p>
+    <h2>No servers to show</h2>
+    <p class="gate__body">Either the bot isn't in any of your servers yet, or you don't have Manage Server permission in the ones it is in. Invite the bot to a server you manage, then refresh this page.</p>
+    <p class="form-message" id="noGuildsError"></p>
+  </section>
+
+  <!-- Guild list -->
+  <section id="guildListView" hidden>
+    <p class="picker-sub">Pick a server to configure the bot for it.</p>
+    <div id="guildGrid" class="guild-grid"></div>
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="shared/config.js"></script>
+<script src="shared/common.js"></script>
+<script src="guilds.js"></script>
+</body>
+</html>

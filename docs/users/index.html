@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bot Dashboard — Users</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../shared/style.css?v=1" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="topbar__logo-emoji" aria-hidden="true">🤖</span>
+    <div>
+      <span class="topbar__eyebrow" id="guildEyebrow">Configuring a server</span>
+      <h1 class="topbar__title" id="guildTitle">Users</h1>
+    </div>
+  </div>
+  <div class="topbar__controls">
+    <nav class="tabs tabs--top" id="pageNav">
+      <a class="tab" id="settingsLink" href="#">Settings</a>
+      <a class="tab tab--active" id="usersLink" href="#">Users</a>
+      <a class="tab" href="../">Switch server</a>
+    </nav>
+    <div id="authArea" class="auth"></div>
+  </div>
+</header>
+
+<main id="view" class="view view--narrow">
+
+  <section id="gate" class="panel gate">
+    <span class="gate__mascot-emoji" aria-hidden="true">🤖</span>
+    <p class="gate__eyebrow">Let's get in</p>
+    <h2>Sign in to continue</h2>
+    <button id="loginBtn" class="btn btn--discord">Continue with Discord</button>
+  </section>
+
+  <section id="loading" class="panel gate" hidden>
+    <p class="gate__eyebrow">Just a sec…</p>
+    <h2>One moment…</h2>
+  </section>
+
+  <section id="denied" class="panel gate" hidden>
+    <p class="gate__eyebrow">Hold up! 🙋</p>
+    <h2>Can't access this server</h2>
+    <p class="gate__body" id="deniedMessage">You need Manage Server permission there to manage points.</p>
+    <a class="btn btn--ghost" href="../">Back to server list</a>
+  </section>
+
+  <section id="authorized" hidden>
+    <div class="panel analytics__section">
+      <h3>🔍 Find a member</h3>
+      <p class="analytics__note">Search by username — results come straight from Discord, so there's nothing to keep in sync.</p>
+      <label class="search search--full">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M13.2 13.9a6.5 6.5 0 1 1 .7-.7l4 4-.7.7-4-4ZM8.5 14a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z" fill="currentColor"/></svg>
+        <input id="searchInput" type="text" placeholder="Start typing a username…" autocomplete="off" />
+      </label>
+      <div id="memberResults" class="member-list"></div>
+      <p class="empty-state" id="memberEmpty" hidden>No members found — try a different search.</p>
+    </div>
+  </section>
+
+</main>
+
+<template id="memberRowTemplate">
+  <div class="member-row">
+    <img class="member-row__avatar" data-avatar alt="" />
+    <span class="member-row__name" data-name></span>
+    <span class="member-row__points" data-points></span>
+    <button class="btn btn--ghost btn--small" data-edit-btn>Edit points</button>
+    <div class="member-row__editor" data-editor hidden>
+      <select data-mode>
+        <option value="set">Set to</option>
+        <option value="add">Add / remove</option>
+      </select>
+      <input type="number" data-amount placeholder="Amount" />
+      <button class="btn btn--discord btn--small" data-confirm-btn>Confirm</button>
+      <span class="form-message" data-editor-message></span>
+    </div>
+  </div>
+</template>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../shared/config.js"></script>
+<script src="../shared/common.js"></script>
+<script src="users.js"></script>
+</body>
+</html>
