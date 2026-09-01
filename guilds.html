@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Select a server — Among Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <strong>🏆 Among Tracker</strong>
+    </div>
+    <div class="topbar-user">
+      <span id="whoami"></span>
+      <button class="btn secondary small" onclick="Auth.logout()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <h2>Select a server</h2>
+    <p class="muted">Showing servers where the bot is present and you have Manage Server or Administrator.</p>
+    <div id="guildList" class="card">
+      <p class="muted">Loading your servers…</p>
+    </div>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const session = Auth.requireSession();
+    if (session) {
+      document.getElementById('whoami').textContent = session.user.username;
+
+      apiFetch('/guilds')
+        .then(data => {
+          const container = document.getElementById('guildList');
+          if (!data.guilds.length) {
+            container.innerHTML = '<p class="muted">No manageable servers found. Make sure the bot is invited and you have Manage Server permission.</p>';
+            return;
+          }
+          container.innerHTML = '';
+          data.guilds.forEach(g => {
+            const row = document.createElement('div');
+            row.className = 'field-row';
+            row.innerHTML = `<span>${g.name}</span>`;
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.textContent = 'Manage';
+            btn.onclick = () => {
+              window.location.href = `dashboard.html?guild=${g.id}&name=${encodeURIComponent(g.name)}`;
+            };
+            row.appendChild(btn);
+            container.appendChild(row);
+          });
+        })
+        .catch(err => {
+          document.getElementById('guildList').innerHTML = `<p class="muted">Error: ${err.message}</p>`;
+        });
+    }
+  </script>
+</body>
+</html>
