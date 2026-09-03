@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Signing in…</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="center-screen">
+    <div class="logo">🏆 Among Tracker</div>
+    <p id="status" class="subtitle">Signing you in…</p>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const error = params.get('error');
+      const statusEl = document.getElementById('status');
+
+      if (error) {
+        statusEl.textContent = `Discord sign-in was cancelled or failed: ${error}`;
+        return;
+      }
+      if (!code) {
+        statusEl.textContent = 'Missing sign-in code. Please try again from the home page.';
+        return;
+      }
+
+      try {
+        const res = await fetch(`${CONFIG.API_BASE}/oauth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, redirect_uri: CONFIG.REDIRECT_URI })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Sign-in failed');
+
+        Auth.setSession(data.access_token, data.expires_in, data.user);
+        window.location.href = 'guilds.html';
+      } catch (err) {
+        statusEl.textContent = `Sign-in failed: ${err.message}`;
+      }
+    })();
+  </script>
+</body>
+</html>

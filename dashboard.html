@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Dashboard — Among Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <strong>🏆 Among Tracker</strong>
+      <a href="guilds.html" class="muted small" style="text-decoration:none;">← Servers</a>
+      <span id="guildName" class="badge"></span>
+    </div>
+    <div class="topbar-user">
+      <span id="whoami"></span>
+      <button class="btn secondary small" onclick="Auth.logout()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="tabs">
+      <div class="tab active" data-tab="points">Points</div>
+      <div class="tab" data-tab="permissions">Command Permissions</div>
+      <div class="tab" data-tab="rewards">Role Rewards</div>
+      <div class="tab" data-tab="multipliers">Multipliers</div>
+      <div class="tab" data-tab="users">User Data</div>
+    </div>
+
+    <section id="tab-points" class="tab-panel">
+      <div class="card">
+        <h3>Point ticks</h3>
+        <p class="hint">How many points are awarded, and how often, during a long session.</p>
+        <div class="field-row">
+          <label>Points awarded per tick</label>
+          <input type="number" id="pointsPerTick" min="0" style="width:100px" />
+        </div>
+        <div class="field-row">
+          <label>Minutes per tick</label>
+          <input type="number" id="tickMinutes" min="1" style="width:100px" />
+        </div>
+        <div class="field-row">
+          <label>Points for a session shorter than one tick</label>
+          <input type="number" id="shortSessionPoints" min="0" style="width:100px" />
+        </div>
+        <div class="field-row">
+          <span></span>
+          <button class="btn" onclick="savePointsSettings()">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-permissions" class="tab-panel" style="display:none">
+      <div class="card">
+        <h3>Manager roles</h3>
+        <p class="hint">Members with any of these roles can run every command, regardless of per-command settings below.</p>
+        <div id="managerRolesList"></div>
+        <div class="field-row">
+          <span></span>
+          <button class="btn" onclick="saveManagerRoles()">Save manager roles</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Per-command permissions</h3>
+        <p class="hint">Choose which roles can run each command. Select "@everyone" to allow anyone.</p>
+        <div id="commandPermsList"></div>
+        <div class="field-row">
+          <span></span>
+          <button class="btn" onclick="saveCommandPerms()">Save command permissions</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-rewards" class="tab-panel" style="display:none">
+      <div class="card">
+        <h3>Role rewards</h3>
+        <p class="hint">Automatically award a role once a user reaches a point threshold.</p>
+        <div id="rewardsList"></div>
+        <button class="btn secondary" onclick="addRewardRow()">+ Add reward</button>
+        <div class="field-row">
+          <span></span>
+          <button class="btn" onclick="saveRewards()">Save role rewards</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-multipliers" class="tab-panel" style="display:none">
+      <div class="card">
+        <h3>Role multipliers</h3>
+        <p class="hint">Members with these roles earn points at a multiplied rate (e.g. 1.5x).</p>
+        <div id="multipliersList"></div>
+        <button class="btn secondary" onclick="addMultiplierRow()">+ Add multiplier</button>
+        <div class="field-row">
+          <span></span>
+          <button class="btn" onclick="saveMultipliers()">Save multipliers</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-users" class="tab-panel" style="display:none">
+      <div class="card">
+        <h3>User data manager</h3>
+        <p class="hint">Search and directly edit any user's point total.</p>
+        <input type="text" id="userSearch" placeholder="Filter by username or ID…" style="width:100%; margin-bottom:12px;" oninput="renderUsers()" />
+        <table>
+          <thead><tr><th>User</th><th>Points</th><th></th></tr></thead>
+          <tbody id="usersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
